@@ -73,7 +73,6 @@ const ChatContainer = styled.div`
 `
 
 const ChatLog = styled.div`
-  position: relative;
   height: 100%;
   overflow-y: auto;
   padding: 10px;
@@ -103,8 +102,9 @@ const ChatLog = styled.div`
 const MessagesContainer = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: flex-end;
   gap: 20px;
+  min-height: 100%;
+  justify-content: flex-end;
 `
 
 const ChatMessage = styled.div<{ $isMine: boolean }>`
