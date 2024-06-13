@@ -26,6 +26,10 @@ const Chat: React.FC = () => {
     }
   }
 
+  const handleClearInput = () => {
+    setInput('')
+  }
+
   useEffect(() => {
     const chatLog = chatLogRef.current
     if (chatLog) {
@@ -56,9 +60,16 @@ const Chat: React.FC = () => {
             onChange={e => setInput(e.target.value)}
             placeholder="Write a message"
           />
-          <ChatButton onClick={handleSendMessage}>
-            {String.fromCharCode(0x27a4)}
-          </ChatButton>
+          {input && (
+            <>
+              <ChatButton onClick={handleSendMessage}>
+                {String.fromCharCode(0x27a4)}
+              </ChatButton>
+              <ClearButton onClick={handleClearInput}>
+                {String.fromCharCode(0x2715)}
+              </ClearButton>
+            </>
+          )}
         </ChatInputWrapper>
       </ChatInputContainer>
     </ChatContainer>
@@ -142,10 +153,8 @@ const ChatInput = styled.textarea`
   resize: none;
 `
 
-const ChatButton = styled.button`
+const ButtonBase = styled.button`
   position: absolute;
-  right: 20px;
-  bottom: 20px;
   width: 30px;
   height: 30px;
   display: flex;
@@ -153,9 +162,20 @@ const ChatButton = styled.button`
   justify-content: center;
   border: none;
   border-radius: 50%;
-  background-color: #007bff;
   color: white;
   cursor: pointer;
   font-size: 18px;
   padding: 0;
+`
+
+const ChatButton = styled(ButtonBase)`
+  right: 20px;
+  bottom: 20px;
+  background-color: #007bff;
+`
+
+const ClearButton = styled(ButtonBase)`
+  right: 20px;
+  top: 20px;
+  background-color: #dc3545;
 `
