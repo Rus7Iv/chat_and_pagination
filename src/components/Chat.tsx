@@ -50,12 +50,16 @@ const Chat: React.FC = () => {
         </MessagesContainer>
       </ChatLog>
       <ChatInputContainer>
-        <ChatInput
-          value={input}
-          onChange={e => setInput(e.target.value)}
-          placeholder="Write a message"
-        />
-        <ChatButton onClick={handleSendMessage}>Send</ChatButton>
+        <ChatInputWrapper>
+          <ChatInput
+            value={input}
+            onChange={e => setInput(e.target.value)}
+            placeholder="Write a message"
+          />
+          <ChatButton onClick={handleSendMessage}>
+            {String.fromCharCode(0x27a4)}
+          </ChatButton>
+        </ChatInputWrapper>
       </ChatInputContainer>
     </ChatContainer>
   )
@@ -123,9 +127,15 @@ const ChatInputContainer = styled.div`
   flex-direction: column;
 `
 
+const ChatInputWrapper = styled.div`
+  position: relative;
+`
+
 const ChatInput = styled.textarea`
+  width: 100%;
   height: 112px;
   padding: 16px;
+  padding-right: 50px;
   box-sizing: border-box;
   border-radius: 6px;
   border: 1px solid #ccc;
@@ -133,10 +143,19 @@ const ChatInput = styled.textarea`
 `
 
 const ChatButton = styled.button`
-  padding: 10px;
+  position: absolute;
+  right: 20px;
+  bottom: 20px;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   border: none;
-  border-radius: 5px;
+  border-radius: 50%;
   background-color: #007bff;
   color: white;
   cursor: pointer;
+  font-size: 18px;
+  padding: 0;
 `
