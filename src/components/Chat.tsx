@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
-import styled from 'styled-components'
+import styled, { keyframes } from 'styled-components'
 
 interface Message {
   text: string
@@ -16,6 +16,7 @@ const initialMessages: Message[] = [
 const Chat: React.FC = () => {
   const [messages, setMessages] = useState<Message[]>(initialMessages)
   const [input, setInput] = useState<string>('')
+  const [isError, setIsError] = useState<boolean>(false)
   const chatLogRef = useRef<HTMLDivElement>(null)
 
   const handleSendMessage = () => {
@@ -28,6 +29,10 @@ const Chat: React.FC = () => {
 
   const handleClearInput = () => {
     setInput('')
+    setIsError(true)
+    setTimeout(() => {
+      setIsError(false)
+    }, 2000)
   }
 
   useEffect(() => {
@@ -59,6 +64,7 @@ const Chat: React.FC = () => {
             value={input}
             onChange={e => setInput(e.target.value)}
             placeholder="Write a message"
+            className={isError ? 'error' : ''}
           />
           {input && (
             <>
@@ -142,6 +148,21 @@ const ChatInputWrapper = styled.div`
   position: relative;
 `
 
+const errorAnimation = keyframes`
+  0% {
+    border-color: #dc3545;
+    box-shadow: 0px 0px 0px 2px #f8d7da;
+  }
+  50% {
+    border-color: #dc3545;
+    box-shadow: 0px 0px 0px 4px #f8d7da;
+  }
+  100% {
+    border-color: #dee2e6;
+    box-shadow: 0px 0px 0px 2px transparent;
+  }
+`
+
 const ChatInput = styled.textarea`
   width: 100%;
   height: 112px;
@@ -149,8 +170,18 @@ const ChatInput = styled.textarea`
   padding-right: 50px;
   box-sizing: border-box;
   border-radius: 6px;
-  border: 1px solid #ccc;
+  border: 1px solid #dee2e6;
   resize: none;
+  font-family: Inter, sans-serif;
+
+  &:hover {
+    border: 1px solid #7749f8;
+    box-shadow: 0px 0px 0px 2px #e8dbfd;
+  }
+
+  &.error {
+    animation: ${errorAnimation} 2s ease-in-out;
+  }
 `
 
 const ButtonBase = styled.button`
