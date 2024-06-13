@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { KeyboardEventHandler, useEffect, useRef, useState } from 'react'
 import styled, { keyframes } from 'styled-components'
 
 interface Message {
@@ -35,6 +35,15 @@ const Chat: React.FC = () => {
     }, 2000)
   }
 
+  const handleKeyDown: KeyboardEventHandler<HTMLTextAreaElement> = e => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault()
+      handleSendMessage()
+    } else if (e.key === 'Enter' && e.shiftKey) {
+      setInput(input + '\n')
+    }
+  }
+
   useEffect(() => {
     const chatLog = chatLogRef.current
     if (chatLog) {
@@ -61,8 +70,10 @@ const Chat: React.FC = () => {
       <ChatInputContainer>
         <ChatInputWrapper>
           <ChatInput
+            as="textarea"
             value={input}
             onChange={e => setInput(e.target.value)}
+            onKeyDown={handleKeyDown}
             placeholder="Write a message"
             className={isError ? 'error' : ''}
           />
