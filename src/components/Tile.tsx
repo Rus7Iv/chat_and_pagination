@@ -32,6 +32,7 @@ const StyledTile = styled.div`
   display: flex;
   flex-direction: column;
   overflow: hidden;
+  cursor: pointer;
 
   img {
     flex-grow: 1;
@@ -49,6 +50,15 @@ const StyledTile = styled.div`
     color: #68717a;
     font-weight: 400;
     font-size: 16px;
+  }
+
+  &:hover {
+    border: 1px solid #7749f8;
+    box-shadow: 0px 0px 0px 2px #e8dbfd;
+  }
+
+  &:active {
+    border: 1px solid black;
   }
 `
 
