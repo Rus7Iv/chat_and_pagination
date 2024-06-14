@@ -19,13 +19,21 @@ const Pagination = ({
     pageNumbers.push(i)
   }
 
+  const handlePageClick = (
+    pageNumber: number,
+    event: React.MouseEvent<HTMLAnchorElement>
+  ) => {
+    event.preventDefault()
+    paginate(pageNumber)
+  }
+
   return (
     <Nav>
       <ul className="pagination">
         <PageItem>
           <PageLink
-            onClick={() => paginate(currentPage - 1)}
-            href="#!"
+            onClick={event => handlePageClick(currentPage - 1, event)}
+            href="#"
             disabled={currentPage === 1}
           >
             &laquo;
@@ -34,8 +42,8 @@ const Pagination = ({
         {pageNumbers.map(number => (
           <PageItem key={number}>
             <PageLink
-              onClick={() => paginate(number)}
-              href="#!"
+              onClick={event => handlePageClick(number, event)}
+              href="#"
               className={currentPage === number ? 'active' : ''}
             >
               {number}
@@ -44,8 +52,8 @@ const Pagination = ({
         ))}
         <PageItem>
           <PageLink
-            onClick={() => paginate(currentPage + 1)}
-            href="#!"
+            onClick={event => handlePageClick(currentPage + 1, event)}
+            href="#"
             disabled={currentPage === Math.ceil(totalTiles / tilesPerPage)}
           >
             &raquo;
