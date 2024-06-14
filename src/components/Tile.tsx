@@ -8,13 +8,13 @@ interface TileProps {
 const Tile = ({ tile }: TileProps) => {
   return (
     <StyledTile>
-      <img src={tile.Image} alt={tile.Name} />
+      <img src={tile.image} alt={tile.name} />
       <DescriptionText>
         <div>
-          <p>{tile.Name}</p>
-          <p className="description">{tile.Description}</p>
+          <p>{tile.name}</p>
+          <p className="description">{tile.description}</p>
         </div>
-        <p>{tile.Price} ₽</p>
+        <p>{tile.price} ₽</p>
       </DescriptionText>
     </StyledTile>
   )

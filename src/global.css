@@ -12,7 +12,6 @@ body {
   min-height: 100vh;
 }
 
-
 .container {
   display: flex;
   flex-direction: column;
@@ -24,19 +23,4 @@ body {
   grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
   gap: 16px;
   margin-bottom: 20px;
-}
-
-.pagination {
-  display: flex;
-  list-style: none;
-}
-
-.page-item {
-  margin: 0 5px;
-}
-
-.page-link {
-  cursor: pointer;
-  color: #007bff;
-  text-decoration: none;
 }
