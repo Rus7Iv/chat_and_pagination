@@ -67,27 +67,65 @@ const Pagination = ({
 export default Pagination
 
 const Nav = styled.nav`
+  display: flex;
+  justify-content: center;
+
   .pagination {
     display: flex;
     list-style: none;
+    padding: 0;
+    margin: 0;
   }
 `
 
 const PageItem = styled.li`
-  margin: 0 5px;
+  margin: 0;
+
+  &:first-child a {
+    border-top-left-radius: 4px;
+    border-bottom-left-radius: 4px;
+    border-left: 1px solid #e9ecef;
+    width: 48px;
+  }
+
+  &:last-child a {
+    border-top-right-radius: 4px;
+    border-bottom-right-radius: 4px;
+    width: 48px;
+  }
 `
 
 const PageLink = styled.a<{ disabled?: boolean }>`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border: 1px solid #e9ecef;
+  border-left: none;
   cursor: pointer;
-  color: #007bff;
+  color: #6c757d;
   text-decoration: none;
+
+  &:not(:first-child) {
+    border-left: 1px solid #e9ecef;
+  }
+
   ${props =>
     props.disabled &&
     `
     pointer-events: none;
-    color: #6c757d;
+    color: #adb5bd;
+    border-color: #e9ecef;
   `}
+
   &.active {
-    font-weight: bold;
+    background-color: #7749f8;
+    color: white;
+    border: 1px solid #7749f8;
+  }
+
+  &:hover:not(.active):not([disabled]) {
+    background-color: #f8f9fa;
   }
 `
