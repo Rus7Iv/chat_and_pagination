@@ -1,5 +1,6 @@
 import React, { KeyboardEventHandler, useEffect, useRef, useState } from 'react'
 import styled, { keyframes } from 'styled-components'
+import { botQuestions } from '../mocks/questions'
 
 interface Message {
   text: string
@@ -7,10 +8,7 @@ interface Message {
 }
 
 const initialMessages: Message[] = [
-  { text: '1 message', isMine: false },
-  { text: '2 message', isMine: false },
-  { text: '3 message', isMine: true },
-  { text: '4 message', isMine: false }
+  { text: 'Привет, я чат-бот! Как вас зовут?', isMine: false }
 ]
 
 const Chat: React.FC = () => {
@@ -18,12 +16,28 @@ const Chat: React.FC = () => {
   const [input, setInput] = useState<string>('')
   const [isError, setIsError] = useState<boolean>(false)
   const chatLogRef = useRef<HTMLDivElement>(null)
+  const [currentQuestionIndex, setCurrentQuestionIndex] = useState<number>(0)
+  const [isBotTyping, setIsBotTyping] = useState<boolean>(false)
 
   const handleSendMessage = () => {
     if (input.trim()) {
       const newMessage: Message = { text: input, isMine: true }
       setMessages([...messages, newMessage])
       setInput('')
+      setIsBotTyping(true)
+
+      if (currentQuestionIndex < botQuestions.length) {
+        setTimeout(() => {
+          setMessages(prevMessages => [
+            ...prevMessages,
+            { text: botQuestions[currentQuestionIndex], isMine: false }
+          ])
+          setCurrentQuestionIndex(currentQuestionIndex + 1)
+          setIsBotTyping(false)
+        }, 1000)
+      } else {
+        setIsBotTyping(false)
+      }
     }
   }
 
@@ -65,6 +79,7 @@ const Chat: React.FC = () => {
               {msg.text}
             </ChatMessage>
           ))}
+          {isBotTyping && <TypingIndicator />}
         </MessagesContainer>
       </ChatLog>
       <ChatInputContainer>
@@ -220,4 +235,37 @@ const ClearButton = styled(ButtonBase)`
   right: 20px;
   top: 20px;
   background-color: #dc3545;
+`
+
+const typingAnimation = keyframes`
+  0% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+  100% { transform: translateY(0); }
+`
+
+const TypingIndicator = styled.div`
+  width: 60px;
+  height: 24px;
+  position: relative;
+  margin: 0 auto;
+
+  &::before,
+  &::after {
+    content: '';
+    width: 10px;
+    height: 10px;
+    background: #9ec5fe;
+    border-radius: 50%;
+    position: absolute;
+    animation: ${typingAnimation} 1s infinite ease;
+  }
+
+  &::before {
+    left: 0;
+    animation-delay: -0.5s;
+  }
+
+  &::after {
+    right: 0;
+  }
 `
