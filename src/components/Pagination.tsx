@@ -71,6 +71,7 @@ export default Pagination
 const Nav = styled.nav`
   display: flex;
   justify-content: center;
+  background-color: #fff;
 
   .pagination {
     display: flex;
