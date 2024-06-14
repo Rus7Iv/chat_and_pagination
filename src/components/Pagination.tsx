@@ -1,4 +1,6 @@
 import styled from 'styled-components'
+import { ChevronLeft } from '../assets/ChevronLeft'
+import { ChevronRight } from '../assets/ChevronRight'
 
 interface PaginationProps {
   totalTiles: number
@@ -36,7 +38,7 @@ const Pagination = ({
             href="#"
             disabled={currentPage === 1}
           >
-            &laquo;
+            <ChevronLeft />
           </PageLink>
         </PageItem>
         {pageNumbers.map(number => (
@@ -56,7 +58,7 @@ const Pagination = ({
             href="#"
             disabled={currentPage === Math.ceil(totalTiles / tilesPerPage)}
           >
-            &raquo;
+            <ChevronRight />
           </PageLink>
         </PageItem>
       </ul>
