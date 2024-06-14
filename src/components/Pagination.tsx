@@ -10,6 +10,7 @@ interface PaginationProps {
 const Pagination = ({
   totalTiles,
   tilesPerPage,
+  currentPage,
   paginate
 }: PaginationProps) => {
   const pageNumbers = []
@@ -21,13 +22,35 @@ const Pagination = ({
   return (
     <Nav>
       <ul className="pagination">
+        <PageItem>
+          <PageLink
+            onClick={() => paginate(currentPage - 1)}
+            href="#!"
+            disabled={currentPage === 1}
+          >
+            &laquo;
+          </PageLink>
+        </PageItem>
         {pageNumbers.map(number => (
           <PageItem key={number}>
-            <PageLink onClick={() => paginate(number)} href="#!">
+            <PageLink
+              onClick={() => paginate(number)}
+              href="#!"
+              className={currentPage === number ? 'active' : ''}
+            >
               {number}
             </PageLink>
           </PageItem>
         ))}
+        <PageItem>
+          <PageLink
+            onClick={() => paginate(currentPage + 1)}
+            href="#!"
+            disabled={currentPage === Math.ceil(totalTiles / tilesPerPage)}
+          >
+            &raquo;
+          </PageLink>
+        </PageItem>
       </ul>
     </Nav>
   )
@@ -46,8 +69,17 @@ const PageItem = styled.li`
   margin: 0 5px;
 `
 
-const PageLink = styled.a`
+const PageLink = styled.a<{ disabled?: boolean }>`
   cursor: pointer;
   color: #007bff;
   text-decoration: none;
+  ${props =>
+    props.disabled &&
+    `
+    pointer-events: none;
+    color: #6c757d;
+  `}
+  &.active {
+    font-weight: bold;
+  }
 `
