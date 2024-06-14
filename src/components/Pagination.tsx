@@ -1,3 +1,5 @@
+import styled from 'styled-components'
+
 interface PaginationProps {
   totalTiles: number
   tilesPerPage: number
@@ -17,18 +19,35 @@ const Pagination = ({
   }
 
   return (
-    <nav>
+    <Nav>
       <ul className="pagination">
         {pageNumbers.map(number => (
-          <li key={number} className="page-item">
-            <a onClick={() => paginate(number)} href="!#" className="page-link">
+          <PageItem key={number}>
+            <PageLink onClick={() => paginate(number)} href="#!">
               {number}
-            </a>
-          </li>
+            </PageLink>
+          </PageItem>
         ))}
       </ul>
-    </nav>
+    </Nav>
   )
 }
 
 export default Pagination
+
+const Nav = styled.nav`
+  .pagination {
+    display: flex;
+    list-style: none;
+  }
+`
+
+const PageItem = styled.li`
+  margin: 0 5px;
+`
+
+const PageLink = styled.a`
+  cursor: pointer;
+  color: #007bff;
+  text-decoration: none;
+`
