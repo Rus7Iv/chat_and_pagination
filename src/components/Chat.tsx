@@ -65,6 +65,10 @@ const Chat: React.FC = () => {
       } else {
         chatLog.classList.remove('scroll-content')
       }
+      const lastMessage = chatLog.lastElementChild
+      if (lastMessage) {
+        lastMessage.scrollIntoView({ behavior: 'smooth', block: 'end' })
+      }
     }
   }, [messages])
 
