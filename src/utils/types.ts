@@ -1,8 +1,9 @@
 export interface TileData {
-  Name: string
-  Description: string
-  Image: string
-  Price: number
+  id: number
+  name: string
+  description: string
+  image: string
+  price: number
 }
 
 export interface ChatEntry {

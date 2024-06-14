@@ -30,7 +30,7 @@ const App: React.FC = () => {
     <div className="container">
       <div className="tiles">
         {currentTiles.map(tile => (
-          <Tile key={tile.Name} tile={tile} />
+          <Tile key={tile.id} tile={tile} />
         ))}
       </div>
       <Pagination
