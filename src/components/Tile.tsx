@@ -31,12 +31,14 @@ const StyledTile = styled.div`
   height: 377px;
   display: flex;
   flex-direction: column;
+  overflow: hidden;
 
   img {
     flex-grow: 1;
     flex-shrink: 1;
     object-fit: cover;
     height: 100%;
+    width: 100%;
   }
 
   p {
