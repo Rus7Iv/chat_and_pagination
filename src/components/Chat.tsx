@@ -24,19 +24,17 @@ const Chat: React.FC = () => {
       const newMessage: Message = { text: input, isMine: true }
       setMessages([...messages, newMessage])
       setInput('')
-      setIsBotTyping(true)
 
-      if (currentQuestionIndex < botQuestions.length) {
+      if (!isBotTyping && currentQuestionIndex < botQuestions.length) {
+        setIsBotTyping(true)
         setTimeout(() => {
           setMessages(prevMessages => [
             ...prevMessages,
             { text: botQuestions[currentQuestionIndex], isMine: false }
           ])
-          setCurrentQuestionIndex(currentQuestionIndex + 1)
+          setCurrentQuestionIndex(prevIndex => prevIndex + 1)
           setIsBotTyping(false)
         }, 1000)
-      } else {
-        setIsBotTyping(false)
       }
     }
   }
