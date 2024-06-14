@@ -135,6 +135,7 @@ const ChatLog = styled.div`
   &::-webkit-scrollbar-thumb {
     background: #888;
     border-radius: 5px;
+    box-shadow: inset 0 0 0 2px #fff;
   }
 
   &::-webkit-scrollbar-thumb:hover {
