@@ -11,6 +11,9 @@ const App: React.FC = () => {
   const [tiles, setTiles] = useState<TileData[]>([])
   const [currentPage, setCurrentPage] = useState<number>(1)
   const [tilesPerPage] = useState<number>(4)
+  const [visibleComponent, setVisibleComponent] = useState<
+    'buttons' | 'pagination' | 'chat'
+  >('buttons')
 
   useEffect(() => {
     const storedTiles = JSON.parse(localStorage.getItem('tiles') || '[]')
@@ -28,22 +31,61 @@ const App: React.FC = () => {
 
   const paginate = (pageNumber: number) => setCurrentPage(pageNumber)
 
+  const handleBack = () => {
+    setVisibleComponent('buttons')
+  }
+
   return (
     <Container>
-      <TilesList>
-        <Tiles>
-          {currentTiles.map(tile => (
-            <Tile key={tile.id} tile={tile} />
-          ))}
-        </Tiles>
-        <Pagination
-          totalTiles={tiles.length}
-          tilesPerPage={tilesPerPage}
-          currentPage={currentPage}
-          paginate={paginate}
-        />
-      </TilesList>
-      <Chat />
+      <DesktopView>
+        <TilesList>
+          <Tiles>
+            {currentTiles.map(tile => (
+              <Tile key={tile.id} tile={tile} />
+            ))}
+          </Tiles>
+          <Pagination
+            totalTiles={tiles.length}
+            tilesPerPage={tilesPerPage}
+            currentPage={currentPage}
+            paginate={paginate}
+          />
+        </TilesList>
+        <Chat />
+      </DesktopView>
+
+      {visibleComponent === 'buttons' && (
+        <ButtonsContainer>
+          <Button onClick={() => setVisibleComponent('pagination')}>
+            Pagination
+          </Button>
+          <Button onClick={() => setVisibleComponent('chat')}>Chat</Button>
+        </ButtonsContainer>
+      )}
+
+      {(visibleComponent === 'pagination' || visibleComponent === 'chat') && (
+        <ComponentContainer>
+          <BackButton onClick={handleBack}>Back</BackButton>
+          {visibleComponent === 'pagination' && (
+            <>
+              <TilesList>
+                <Tiles>
+                  {currentTiles.map(tile => (
+                    <Tile key={tile.id} tile={tile} />
+                  ))}
+                </Tiles>
+              </TilesList>
+              <Pagination
+                totalTiles={tiles.length}
+                tilesPerPage={tilesPerPage}
+                currentPage={currentPage}
+                paginate={paginate}
+              />
+            </>
+          )}
+          {visibleComponent === 'chat' && <Chat />}
+        </ComponentContainer>
+      )}
     </Container>
   )
 }
@@ -52,9 +94,9 @@ export default App
 
 const Container = styled.div`
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   align-items: center;
-  gap: 92px;
+  gap: 20px;
 `
 
 const TilesList = styled.div`
@@ -73,5 +115,54 @@ const Tiles = styled.div`
 
   @media ${devices.tablet} {
     grid-template-columns: repeat(2, 2fr);
+  }
+`
+
+const ButtonsContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+
+  @media ${devices.laptop} {
+    display: none;
+  }
+`
+
+const Button = styled.button`
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+`
+
+const ComponentContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 27px;
+
+  @media ${devices.laptop} {
+    display: none;
+  }
+`
+
+const BackButton = styled.button`
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  margin-bottom: 20px;
+
+  @media ${devices.laptop} {
+    display: none;
+  }
+`
+
+const DesktopView = styled.div`
+  display: none;
+
+  @media ${devices.laptop} {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 92px;
   }
 `
