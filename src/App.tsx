@@ -30,7 +30,10 @@ const App: React.FC = () => {
   const indexOfFirstTile = indexOfLastTile - tilesPerPage
   const currentTiles = tiles.slice(indexOfFirstTile, indexOfLastTile)
 
-  const paginate = (pageNumber: number) => setCurrentPage(pageNumber)
+  const paginate = (pageNumber: number) => {
+    setCurrentPage(pageNumber)
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+  }
 
   const handleBack = () => {
     setVisibleComponent('buttons')
