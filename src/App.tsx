@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import styled from 'styled-components'
 import Chat from './components/Chat'
 import Pagination from './components/Pagination'
 import Tile from './components/Tile'
@@ -27,12 +28,12 @@ const App: React.FC = () => {
   const paginate = (pageNumber: number) => setCurrentPage(pageNumber)
 
   return (
-    <div className="container">
-      <div className="tiles">
+    <Container>
+      <Tiles>
         {currentTiles.map(tile => (
           <Tile key={tile.id} tile={tile} />
         ))}
-      </div>
+      </Tiles>
       <Pagination
         totalTiles={tiles.length}
         tilesPerPage={tilesPerPage}
@@ -40,8 +41,21 @@ const App: React.FC = () => {
         paginate={paginate}
       />
       <Chat />
-    </div>
+    </Container>
   )
 }
 
 export default App
+
+const Container = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+`
+
+const Tiles = styled.div`
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 16px;
+  margin-bottom: 20px;
+`
