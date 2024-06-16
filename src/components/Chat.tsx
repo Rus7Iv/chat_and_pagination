@@ -1,6 +1,7 @@
 import React, { KeyboardEventHandler, useEffect, useRef, useState } from 'react'
 import styled, { keyframes } from 'styled-components'
 import { botQuestions } from '../mocks/questions'
+import { devices } from '../styles/global-styles'
 
 interface Message {
   text: string
@@ -113,12 +114,18 @@ const Chat: React.FC = () => {
 export default Chat
 
 const ChatContainer = styled.div`
+  width: 90vw;
+  height: 80vh;
+  max-width: 455px;
   display: flex;
   flex-direction: column;
-  width: 455px;
-  height: 600px;
   padding: 10px;
   gap: 10px;
+
+  @media ${devices.laptop} {
+    width: 455px;
+    height: 600px;
+  }
 `
 
 const ChatLog = styled.div`
