@@ -1,10 +1,19 @@
 import { createGlobalStyle } from 'styled-components'
 
+const sizes = {
+  mobile: '425px',
+  tablet: '768px',
+  laptop: '1024px'
+}
+
+export const devices = {
+  mobile: `(min-width: ${sizes.mobile})`,
+  tablet: `(min-width: ${sizes.tablet})`,
+  laptop: `(min-width: ${sizes.laptop})`
+}
+
 const GlobalStyle = createGlobalStyle`
   :root {
-    --mobile: (max-width: 480px);
-    --tablet: (max-width: 768px);
-    --laptop: (max-width: 1024px);
 
     font-family: 'Inter', sans-serif;
     line-height: 1.5;

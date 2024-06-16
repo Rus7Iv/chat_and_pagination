@@ -4,6 +4,7 @@ import Chat from './components/Chat'
 import Pagination from './components/Pagination'
 import Tile from './components/Tile'
 import { exampleTiles } from './mocks/cards'
+import { devices } from './styles/global-styles'
 import { TileData } from './utils/types'
 
 const App: React.FC = () => {
@@ -65,4 +66,12 @@ const TilesList = styled.div`
 const Tiles = styled.div`
   display: grid;
   gap: 21px;
+
+  @media ${devices.mobile} {
+    grid-template-columns: repeat(1, 1fr);
+  }
+
+  @media ${devices.tablet} {
+    grid-template-columns: repeat(2, 2fr);
+  }
 `
