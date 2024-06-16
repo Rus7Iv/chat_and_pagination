@@ -1,3 +1,4 @@
+import React from 'react'
 import styled from 'styled-components'
 import { ChevronLeft } from '../assets/ChevronLeft'
 import { ChevronRight } from '../assets/ChevronRight'
@@ -9,24 +10,62 @@ interface PaginationProps {
   paginate: (pageNumber: number) => void
 }
 
-const Pagination = ({
+const getVisiblePageNumbers = (currentPage: number, totalPages: number) => {
+  const maxVisiblePages = 5
+  const halfMaxVisiblePages = Math.floor(maxVisiblePages / 2)
+
+  if (totalPages <= maxVisiblePages) {
+    return Array.from({ length: totalPages }, (_, i) => i + 1)
+  }
+
+  if (currentPage <= halfMaxVisiblePages) {
+    return [
+      ...Array.from({ length: halfMaxVisiblePages }, (_, i) => i + 1),
+      '...',
+      totalPages
+    ]
+  }
+
+  if (currentPage > totalPages - halfMaxVisiblePages) {
+    return [
+      1,
+      '...',
+      ...Array.from(
+        { length: totalPages - currentPage + halfMaxVisiblePages },
+        (_, i) => currentPage - halfMaxVisiblePages + i + 1
+      )
+    ]
+  }
+
+  return [
+    1,
+    '...',
+    ...Array.from(
+      { length: maxVisiblePages - 2 },
+      (_, i) => currentPage - halfMaxVisiblePages + i + 1
+    ),
+    '...',
+    totalPages
+  ]
+}
+
+const Pagination: React.FC<PaginationProps> = ({
   totalTiles,
   tilesPerPage,
   currentPage,
   paginate
 }: PaginationProps) => {
-  const pageNumbers = []
-
-  for (let i = 1; i <= Math.ceil(totalTiles / tilesPerPage); i++) {
-    pageNumbers.push(i)
-  }
+  const totalPages = Math.ceil(totalTiles / tilesPerPage)
+  const visiblePageNumbers = getVisiblePageNumbers(currentPage, totalPages)
 
   const handlePageClick = (
-    pageNumber: number,
+    pageNumber: number | string,
     event: React.MouseEvent<HTMLAnchorElement>
   ) => {
-    event.preventDefault()
-    paginate(pageNumber)
+    if (typeof pageNumber === 'number') {
+      event.preventDefault()
+      paginate(pageNumber)
+    }
   }
 
   return (
@@ -41,12 +80,17 @@ const Pagination = ({
             <ChevronLeft />
           </PageLink>
         </PageItem>
-        {pageNumbers.map(number => (
-          <PageItem key={number}>
+        {visiblePageNumbers.map((number, index) => (
+          <PageItem key={index}>
             <PageLink
               onClick={event => handlePageClick(number, event)}
               href="#"
-              className={currentPage === number ? 'active' : ''}
+              className={
+                typeof number === 'number' && currentPage === number
+                  ? 'active'
+                  : ''
+              }
+              disabled={typeof number !== 'number'}
             >
               {number}
             </PageLink>
@@ -56,7 +100,7 @@ const Pagination = ({
           <PageLink
             onClick={event => handlePageClick(currentPage + 1, event)}
             href="#"
-            disabled={currentPage === Math.ceil(totalTiles / tilesPerPage)}
+            disabled={currentPage === totalPages}
           >
             <ChevronRight />
           </PageLink>
@@ -79,23 +123,6 @@ const Nav = styled.nav`
     margin: 0;
     background-color: #fff;
     margin-bottom: 44px;
-  }
-`
-
-const PageItem = styled.li`
-  margin: 0;
-
-  &:first-child a {
-    border-top-left-radius: 4px;
-    border-bottom-left-radius: 4px;
-    border-left: 1px solid #e9ecef;
-    width: 48px;
-  }
-
-  &:last-child a {
-    border-top-right-radius: 4px;
-    border-bottom-right-radius: 4px;
-    width: 48px;
   }
 `
 
@@ -131,5 +158,22 @@ const PageLink = styled.a<{ disabled?: boolean }>`
 
   &:hover:not(.active):not([disabled]) {
     background-color: #f8f9fa;
+  }
+`
+
+const PageItem = styled.li`
+  margin: 0;
+
+  &:first-child ${PageLink} {
+    border-top-left-radius: 4px;
+    border-bottom-left-radius: 4px;
+    border-left: 1px solid #e9ecef;
+    width: 48px;
+  }
+
+  &:last-child ${PageLink} {
+    border-top-right-radius: 4px;
+    border-bottom-right-radius: 4px;
+    width: 48px;
   }
 `
