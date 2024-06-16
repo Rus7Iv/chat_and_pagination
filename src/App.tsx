@@ -29,17 +29,19 @@ const App: React.FC = () => {
 
   return (
     <Container>
-      <Tiles>
-        {currentTiles.map(tile => (
-          <Tile key={tile.id} tile={tile} />
-        ))}
-      </Tiles>
-      <Pagination
-        totalTiles={tiles.length}
-        tilesPerPage={tilesPerPage}
-        currentPage={currentPage}
-        paginate={paginate}
-      />
+      <TilesList>
+        <Tiles>
+          {currentTiles.map(tile => (
+            <Tile key={tile.id} tile={tile} />
+          ))}
+        </Tiles>
+        <Pagination
+          totalTiles={tiles.length}
+          tilesPerPage={tilesPerPage}
+          currentPage={currentPage}
+          paginate={paginate}
+        />
+      </TilesList>
       <Chat />
     </Container>
   )
@@ -51,11 +53,16 @@ const Container = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
+  gap: 92px;
+`
+
+const TilesList = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 49px;
 `
 
 const Tiles = styled.div`
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  gap: 16px;
-  margin-bottom: 20px;
+  gap: 21px;
 `
