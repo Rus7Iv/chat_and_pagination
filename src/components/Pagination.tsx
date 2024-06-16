@@ -71,13 +71,13 @@ export default Pagination
 const Nav = styled.nav`
   display: flex;
   justify-content: center;
-  background-color: #fff;
 
   .pagination {
     display: flex;
     list-style: none;
     padding: 0;
     margin: 0;
+    background-color: #fff;
   }
 `
 
