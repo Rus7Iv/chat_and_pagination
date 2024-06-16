@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
+import { ChevronLeft } from './assets/ChevronLeft'
 import Chat from './components/Chat'
 import Pagination from './components/Pagination'
 import Tile from './components/Tile'
@@ -65,7 +66,11 @@ const App: React.FC = () => {
 
       {(visibleComponent === 'pagination' || visibleComponent === 'chat') && (
         <ComponentContainer>
-          <BackButton onClick={handleBack}>Back</BackButton>
+          <MobileHeader>
+            <BackButton onClick={handleBack}>
+              <ChevronLeft />
+            </BackButton>
+          </MobileHeader>
           {visibleComponent === 'pagination' && (
             <>
               <TilesList>
@@ -132,6 +137,10 @@ const Button = styled.button`
   padding: 10px 20px;
   font-size: 16px;
   cursor: pointer;
+  color: #6c757d;
+  background-color: #fff;
+  border: 1px solid #e9ecef;
+  border-radius: 4px;
 `
 
 const ComponentContainer = styled.div`
@@ -139,6 +148,7 @@ const ComponentContainer = styled.div`
   flex-direction: column;
   align-items: center;
   gap: 27px;
+  margin: 80px 0;
 
   @media ${devices.laptop} {
     display: none;
@@ -146,10 +156,12 @@ const ComponentContainer = styled.div`
 `
 
 const BackButton = styled.button`
-  padding: 10px 20px;
-  font-size: 16px;
+  width: 40px;
+  height: 40px;
   cursor: pointer;
-  margin-bottom: 20px;
+  background-color: #fff;
+  border: 1px solid #e9ecef;
+  border-radius: 4px;
 
   @media ${devices.laptop} {
     display: none;
@@ -165,4 +177,19 @@ const DesktopView = styled.div`
     align-items: center;
     gap: 92px;
   }
+`
+
+const MobileHeader = styled.div`
+  width: 100%;
+  height: fit-content;
+  display: flex;
+  position: fixed;
+  top: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 1),
+    rgba(255, 255, 255, 0)
+  );
+  padding: 20px;
+  padding-left: 40px;
 `
