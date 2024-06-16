@@ -3,7 +3,7 @@ import { createGlobalStyle } from 'styled-components'
 const sizes = {
   mobile: '425px',
   tablet: '768px',
-  laptop: '1024px'
+  laptop: '1200px'
 }
 
 export const devices = {
