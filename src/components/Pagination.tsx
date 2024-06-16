@@ -78,6 +78,7 @@ const Nav = styled.nav`
     padding: 0;
     margin: 0;
     background-color: #fff;
+    margin-bottom: 44px;
   }
 `
 

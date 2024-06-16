@@ -148,7 +148,7 @@ const ComponentContainer = styled.div`
   flex-direction: column;
   align-items: center;
   gap: 27px;
-  margin: 80px 0;
+  margin-top: 80px;
 
   @media ${devices.laptop} {
     display: none;
