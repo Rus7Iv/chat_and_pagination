@@ -35,6 +35,12 @@ const App: React.FC = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' })
   }
 
+  const handleDeleteTile = (id: string) => {
+    const updatedTiles = tiles.filter(tile => tile.id !== id)
+    setTiles(updatedTiles)
+    localStorage.setItem('tiles', JSON.stringify(updatedTiles))
+  }
+
   const handleBack = () => {
     setVisibleComponent('buttons')
   }
@@ -45,7 +51,11 @@ const App: React.FC = () => {
         <TilesList>
           <Tiles>
             {currentTiles.map(tile => (
-              <Tile key={tile.id} tile={tile} />
+              <Tile
+                key={tile.id}
+                tile={tile}
+                onDelete={() => handleDeleteTile(tile.id)}
+              />
             ))}
           </Tiles>
           <Pagination
@@ -79,7 +89,11 @@ const App: React.FC = () => {
               <TilesList>
                 <Tiles>
                   {currentTiles.map(tile => (
-                    <Tile key={tile.id} tile={tile} />
+                    <Tile
+                      key={tile.id}
+                      tile={tile}
+                      onDelete={() => handleDeleteTile(tile.id)}
+                    />
                   ))}
                 </Tiles>
               </TilesList>

@@ -1,13 +1,22 @@
 import styled from 'styled-components'
+import { DeleteIcon } from '../assets/DeleteIcon'
 import { TileData } from '../utils/types'
 
 interface TileProps {
   tile: TileData
+  onDelete: () => void
 }
 
-const Tile = ({ tile }: TileProps) => {
+const Tile = ({ tile, onDelete }: TileProps) => {
+  const handleDelete = () => {
+    onDelete()
+  }
+
   return (
     <StyledTile>
+      <DeleteButton onClick={handleDelete}>
+        <DeleteIcon />
+      </DeleteButton>
       <img src={tile.image} alt={tile.name} />
       <DescriptionText>
         <div>
@@ -23,6 +32,7 @@ const Tile = ({ tile }: TileProps) => {
 export default Tile
 
 const StyledTile = styled.div`
+  position: relative;
   border: 1px solid #dee2e6;
   border-radius: 12px;
   box-sizing: border-box;
@@ -40,6 +50,10 @@ const StyledTile = styled.div`
     object-fit: cover;
     height: 100%;
     width: 100%;
+
+    &:hover {
+      filter: brightness(0.45);
+    }
   }
 
   p {
@@ -55,6 +69,14 @@ const StyledTile = styled.div`
   &:hover {
     border: 1px solid #7749f8;
     box-shadow: 0px 0px 0px 2px #e8dbfd;
+
+    img {
+      filter: brightness(0.45);
+    }
+
+    button {
+      display: block;
+    }
   }
 
   &:active {
@@ -72,4 +94,25 @@ const DescriptionText = styled.div`
 
   font-weight: 600;
   font-size: 20px;
+`
+
+const DeleteButton = styled.button`
+  display: none;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -100%);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 18px;
+  color: #ff4c4c;
+  z-index: 100;
+
+  &:hover {
+    color: #cc0000;
+    ~ img {
+      filter: brightness(0.45);
+    }
+  }
 `
