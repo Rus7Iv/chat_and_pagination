@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import { ChevronLeft } from './assets/ChevronLeft'
+import AddTileForm from './components/AddTileForm'
 import Chat from './components/Chat'
 import Pagination from './components/Pagination'
 import Tile from './components/Tile'
@@ -13,8 +14,9 @@ const App: React.FC = () => {
   const [currentPage, setCurrentPage] = useState<number>(1)
   const [tilesPerPage] = useState<number>(4)
   const [visibleComponent, setVisibleComponent] = useState<
-    'buttons' | 'pagination' | 'chat'
+    'buttons' | 'pagination' | 'chat' | 'addTile'
   >('buttons')
+  const [showAddTileForm, setShowAddTileForm] = useState(false)
 
   useEffect(() => {
     const storedTiles = JSON.parse(localStorage.getItem('tiles') || '[]')
@@ -41,8 +43,16 @@ const App: React.FC = () => {
     localStorage.setItem('tiles', JSON.stringify(updatedTiles))
   }
 
+  const handleSaveTile = (newTile: TileData) => {
+    const updatedTiles = [...tiles, newTile]
+    setTiles(updatedTiles)
+    localStorage.setItem('tiles', JSON.stringify(updatedTiles))
+    setShowAddTileForm(false)
+  }
+
   const handleBack = () => {
     setVisibleComponent('buttons')
+    setShowAddTileForm(false)
   }
 
   return (
@@ -58,14 +68,23 @@ const App: React.FC = () => {
               />
             ))}
           </Tiles>
-          <Pagination
-            totalTiles={tiles.length}
-            tilesPerPage={tilesPerPage}
-            currentPage={currentPage}
-            paginate={paginate}
-          />
+          <AddedBtnAndPagination>
+            <PaginationContainer>
+              <Pagination
+                totalTiles={tiles.length}
+                tilesPerPage={tilesPerPage}
+                currentPage={currentPage}
+                paginate={paginate}
+              />
+            </PaginationContainer>
+            <AddedTileButton
+              onClick={() => setShowAddTileForm(!showAddTileForm)}
+            >
+              {showAddTileForm ? <ChevronLeft /> : '+'}
+            </AddedTileButton>
+          </AddedBtnAndPagination>
         </TilesList>
-        <Chat />
+        {showAddTileForm ? <AddTileForm onSave={handleSaveTile} /> : <Chat />}
       </DesktopView>
 
       {visibleComponent === 'buttons' && (
@@ -73,11 +92,14 @@ const App: React.FC = () => {
           <Button onClick={() => setVisibleComponent('pagination')}>
             Pagination
           </Button>
+          <Button onClick={() => setShowAddTileForm(true)}>Add tile</Button>
           <Button onClick={() => setVisibleComponent('chat')}>Chat</Button>
         </ButtonsContainer>
       )}
 
-      {(visibleComponent === 'pagination' || visibleComponent === 'chat') && (
+      {(visibleComponent === 'pagination' ||
+        visibleComponent === 'chat' ||
+        showAddTileForm) && (
         <ComponentContainer>
           <MobileHeader>
             <BackButton onClick={handleBack}>
@@ -106,6 +128,7 @@ const App: React.FC = () => {
             </>
           )}
           {visibleComponent === 'chat' && <Chat />}
+          {showAddTileForm && <AddTileForm onSave={handleSaveTile} />}
         </ComponentContainer>
       )}
     </Container>
@@ -158,6 +181,27 @@ const Button = styled.button`
   background-color: #fff;
   border: 1px solid #e9ecef;
   border-radius: 4px;
+`
+
+const AddedTileButton = styled(Button)`
+  width: 60px;
+  height: 40px;
+  display: flex;
+  margin-left: auto;
+  justify-content: center;
+`
+
+const AddedBtnAndPagination = styled.div`
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  justify-content: space-between;
+`
+
+const PaginationContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  flex-grow: 1;
 `
 
 const ComponentContainer = styled.div`
