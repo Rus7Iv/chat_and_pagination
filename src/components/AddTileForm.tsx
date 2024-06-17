@@ -5,9 +5,15 @@ import { TileData } from '../utils/types'
 
 interface AddTileFormProps {
   onSave: (tile: TileData) => void
+  tiles: TileData[]
+  setTiles: React.Dispatch<React.SetStateAction<TileData[]>>
 }
 
-const AddTileForm: React.FC<AddTileFormProps> = ({ onSave }) => {
+const AddTileForm: React.FC<AddTileFormProps> = ({
+  onSave,
+  tiles,
+  setTiles
+}) => {
   const [name, setName] = useState('')
   const [description, setDescription] = useState('')
   const [price, setPrice] = useState('')
@@ -56,7 +62,21 @@ const AddTileForm: React.FC<AddTileFormProps> = ({ onSave }) => {
       image,
       price: Number(price)
     }
-    onSave(newTile)
+
+    setTiles(prevTiles => [...prevTiles, newTile])
+
+    try {
+      localStorage.setItem('tiles', JSON.stringify([...tiles, newTile]))
+      onSave(newTile)
+    } catch (error) {
+      if (error instanceof DOMException && error.code === 22) {
+        alert(
+          'Ошибка: Недостаточно места в localStorage. Пожалуйста, освободите место и попробуйте снова.'
+        )
+      } else {
+        alert('Произошла неизвестная ошибка при сохранении плитки.')
+      }
+    }
   }
 
   return (

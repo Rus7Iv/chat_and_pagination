@@ -44,10 +44,20 @@ const App: React.FC = () => {
   }
 
   const handleSaveTile = (newTile: TileData) => {
-    const updatedTiles = [...tiles, newTile]
-    setTiles(updatedTiles)
-    localStorage.setItem('tiles', JSON.stringify(updatedTiles))
-    setShowAddTileForm(false)
+    try {
+      const updatedTiles = [...tiles, newTile]
+      setTiles(updatedTiles)
+      localStorage.setItem('tiles', JSON.stringify(updatedTiles))
+      setShowAddTileForm(false)
+    } catch (error) {
+      if (error instanceof DOMException && error.code === 22) {
+        alert(
+          'Ошибка: Недостаточно места в localStorage. Пожалуйста, освободите место и попробуйте снова.'
+        )
+      } else {
+        alert('Произошла неизвестная ошибка при сохранении плитки.')
+      }
+    }
   }
 
   const handleBack = () => {
@@ -84,7 +94,15 @@ const App: React.FC = () => {
             </AddedTileButton>
           </AddedBtnAndPagination>
         </TilesList>
-        {showAddTileForm ? <AddTileForm onSave={handleSaveTile} /> : <Chat />}
+        {showAddTileForm ? (
+          <AddTileForm
+            onSave={handleSaveTile}
+            tiles={tiles}
+            setTiles={setTiles}
+          />
+        ) : (
+          <Chat />
+        )}
       </DesktopView>
 
       {visibleComponent === 'buttons' && (
@@ -128,7 +146,13 @@ const App: React.FC = () => {
             </>
           )}
           {visibleComponent === 'chat' && <Chat />}
-          {showAddTileForm && <AddTileForm onSave={handleSaveTile} />}
+          {showAddTileForm && (
+            <AddTileForm
+              onSave={handleSaveTile}
+              tiles={tiles}
+              setTiles={setTiles}
+            />
+          )}
         </ComponentContainer>
       )}
     </Container>
