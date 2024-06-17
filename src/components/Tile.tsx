@@ -1,6 +1,8 @@
+import { useState } from 'react'
 import styled from 'styled-components'
 import { DeleteIcon } from '../assets/DeleteIcon'
 import { TileData } from '../utils/types'
+import ConfirmationModal from './ConfirmationModal'
 
 interface TileProps {
   tile: TileData
@@ -8,24 +10,43 @@ interface TileProps {
 }
 
 const Tile = ({ tile, onDelete }: TileProps) => {
-  const handleDelete = () => {
+  const [isModalOpen, setModalOpen] = useState(false)
+
+  const handleDeleteClick = () => {
+    setModalOpen(true)
+  }
+
+  const handleClose = () => {
+    setModalOpen(false)
+  }
+
+  const handleConfirmDelete = () => {
     onDelete()
+    setModalOpen(false)
   }
 
   return (
-    <StyledTile>
-      <DeleteButton onClick={handleDelete}>
-        <DeleteIcon />
-      </DeleteButton>
-      <img src={tile.image} alt={tile.name} />
-      <DescriptionText>
-        <div>
-          <p>{tile.name}</p>
-          <p className="description">{tile.description}</p>
-        </div>
-        <p>{tile.price} ₽</p>
-      </DescriptionText>
-    </StyledTile>
+    <>
+      <StyledTile>
+        <DeleteButton onClick={handleDeleteClick}>
+          <DeleteIcon />
+        </DeleteButton>
+        <img src={tile.image} alt={tile.name} />
+        <DescriptionText>
+          <div>
+            <p>{tile.name}</p>
+            <p className="description">{tile.description}</p>
+          </div>
+          <p>{tile.price} ₽</p>
+        </DescriptionText>
+      </StyledTile>
+      <ConfirmationModal
+        isOpen={isModalOpen}
+        onClose={handleClose}
+        content={<p>Вы уверены, что хотите удалить {tile.name}?</p>}
+        onConfirm={handleConfirmDelete}
+      />
+    </>
   )
 }
 
