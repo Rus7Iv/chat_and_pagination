@@ -70,6 +70,7 @@ const StyledTile = styled.div`
     flex-shrink: 1;
     object-fit: cover;
     height: 100%;
+    max-height: 265px;
     width: 100%;
 
     &:hover {

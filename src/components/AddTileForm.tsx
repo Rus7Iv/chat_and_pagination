@@ -11,9 +11,30 @@ const AddTileForm: React.FC<AddTileFormProps> = ({ onSave }) => {
   const [name, setName] = useState('')
   const [description, setDescription] = useState('')
   const [price, setPrice] = useState('')
+  const [image, setImage] = useState('')
+
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files.length > 0) {
+      const file = e.target.files[0]
+      const reader = new FileReader()
+      reader.onload = loadEvent => {
+        if (loadEvent.target) {
+          const base64Image = loadEvent.target.result as string
+          setImage(base64Image)
+        }
+      }
+      reader.readAsDataURL(file)
+    }
+  }
 
   const handleSave = () => {
-    if (!name || !description || isNaN(Number(price)) || Number(price) <= 0) {
+    if (
+      !name ||
+      !description ||
+      isNaN(Number(price)) ||
+      Number(price) <= 0 ||
+      !image
+    ) {
       alert(
         'Пожалуйста, заполните все поля корректно и убедитесь, что цена является положительным числом.'
       )
@@ -23,7 +44,7 @@ const AddTileForm: React.FC<AddTileFormProps> = ({ onSave }) => {
       id: Math.random().toString(36).substr(2, 9),
       name,
       description,
-      image: '',
+      image,
       price: Number(price)
     }
     onSave(newTile)
@@ -31,6 +52,7 @@ const AddTileForm: React.FC<AddTileFormProps> = ({ onSave }) => {
 
   return (
     <FormContainer>
+      <Input type="file" onChange={handleImageChange} accept="image/*" />
       <Input
         type="text"
         value={name}
