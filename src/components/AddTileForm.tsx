@@ -16,6 +16,15 @@ const AddTileForm: React.FC<AddTileFormProps> = ({ onSave }) => {
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
       const file = e.target.files[0]
+
+      const maxFileSize = 5 * 1024 * 1024
+      if (file.size > maxFileSize) {
+        alert(
+          'Изображение слишком большое. Размер файла не должен превышать 5 МБ.'
+        )
+        return
+      }
+
       const reader = new FileReader()
       reader.onload = loadEvent => {
         if (loadEvent.target) {
