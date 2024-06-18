@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useRef, useState } from 'react'
 import styled from 'styled-components'
 import { PlusIcon } from '../assets/PlusIcon'
 import { devices } from '../styles/global-styles'
@@ -20,6 +20,8 @@ const AddTileForm: React.FC<AddTileFormProps> = ({
   const [price, setPrice] = useState('')
   const [image, setImage] = useState('')
   const [imagePreview, setImagePreview] = useState('')
+
+  const fileInputRef = useRef<HTMLInputElement>(null)
 
   const resetForm = () => {
     setName('')
@@ -101,17 +103,37 @@ const AddTileForm: React.FC<AddTileFormProps> = ({
     handleImageChange(e as unknown as React.ChangeEvent<HTMLInputElement>)
   }
 
+  const handleRemoveImage = () => {
+    setImage('')
+    setImagePreview('')
+    if (fileInputRef.current) {
+      fileInputRef.current.value = ''
+    }
+  }
+
   return (
     <FormContainer>
       <FileInputContainer onDragOver={handleDragOver} onDrop={handleDrop}>
-        <FileInput type="file" onChange={handleImageChange} accept="image/*" />
+        <FileInput
+          ref={fileInputRef}
+          type="file"
+          onChange={handleImageChange}
+          accept="image/*"
+        />
         {!imagePreview && (
           <>
             <PlusIcon />
             <p>Upload</p>
           </>
         )}
-        {imagePreview && <ImagePreview src={imagePreview} alt={image} />}
+        {imagePreview && (
+          <ImagePreviewContainer>
+            <ImagePreview src={imagePreview} alt="preview" />
+            <RemoveImageButton onClick={handleRemoveImage}>
+              <CrossIcon />
+            </RemoveImageButton>
+          </ImagePreviewContainer>
+        )}
       </FileInputContainer>
       <TitleWithInput>
         <p>Name</p>
@@ -236,4 +258,30 @@ const ImagePreview = styled.img`
   width: 100%;
   height: 100%;
   object-fit: cover;
+`
+
+const ImagePreviewContainer = styled.div`
+  position: relative;
+  max-width: 100%;
+  max-height: 100%;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+`
+
+const RemoveImageButton = styled.button`
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  border: none;
+  border-radius: 100px;
+  cursor: pointer;
+  width: 30px;
+  height: 30px;
+  align-items: center;
+  padding: 8px;
+`
+
+const CrossIcon = styled(PlusIcon)`
+  transform: rotate(45deg);
 `
