@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import { ChevronLeft } from './assets/ChevronLeft'
+import { PlusIcon } from './assets/PlusIcon'
 import AddTileForm from './components/AddTileForm'
 import Chat from './components/Chat'
 import Pagination from './components/Pagination'
@@ -90,7 +91,7 @@ const App: React.FC = () => {
             <AddedTileButton
               onClick={() => setShowAddTileForm(!showAddTileForm)}
             >
-              {showAddTileForm ? <ChevronLeft /> : '+'}
+              {showAddTileForm ? <ChevronLeft /> : <PlusIcon />}
             </AddedTileButton>
           </AddedBtnAndPagination>
         </TilesList>
