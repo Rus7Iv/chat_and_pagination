@@ -225,14 +225,8 @@ const ButtonBase = styled.button`
   position: absolute;
   width: 30px;
   height: 30px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border: none;
   border-radius: 50%;
   color: white;
-  cursor: pointer;
-  font-size: 18px;
   padding: 0;
 `
 

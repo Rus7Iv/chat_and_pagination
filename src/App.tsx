@@ -207,12 +207,6 @@ const ButtonsContainer = styled.div`
 
 const Button = styled.button`
   padding: 10px 20px;
-  font-size: 16px;
-  cursor: pointer;
-  color: #6c757d;
-  background-color: #fff;
-  border: 1px solid #e9ecef;
-  border-radius: 4px;
 `
 
 const AddedTileButton = styled(Button)`
@@ -251,10 +245,6 @@ const ComponentContainer = styled.div`
 const BackButton = styled.button`
   width: 40px;
   height: 40px;
-  cursor: pointer;
-  background-color: #fff;
-  border: 1px solid #e9ecef;
-  border-radius: 4px;
 
   @media ${devices.laptop} {
     display: none;

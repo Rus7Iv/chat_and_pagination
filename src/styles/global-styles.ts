@@ -30,6 +30,17 @@ const GlobalStyle = createGlobalStyle`
     justify-content: center;
     align-items: center;
   }
+
+  button {
+    font-size: 16px;
+    cursor: pointer;
+    color: #6c757d;
+    background-color: #fff;
+    border: 1px solid #e9ecef;
+    border-radius: 4px;
+    align-items: center;
+    justify-content: center;
+  }
 `
 
 export default GlobalStyle

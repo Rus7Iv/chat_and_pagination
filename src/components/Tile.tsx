@@ -126,10 +126,8 @@ const DeleteButton = styled.button`
   transform: translate(-50%, -100%);
   background: transparent;
   border: none;
-  cursor: pointer;
-  font-size: 18px;
   color: #ff4c4c;
-  z-index: 100;
+  z-index: 1;
 
   &:hover {
     color: #cc0000;

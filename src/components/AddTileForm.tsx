@@ -331,9 +331,6 @@ const SaveButton = styled.button`
   width: 100%;
   background-color: #007bff;
   color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
 `
 
 const ImagePreview = styled.img`
@@ -359,10 +356,8 @@ const RemoveImageButton = styled.button`
   right: 10px;
   border: none;
   border-radius: 100px;
-  cursor: pointer;
   width: 30px;
   height: 30px;
-  align-items: center;
   padding: 8px;
 `
 
