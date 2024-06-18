@@ -1,5 +1,7 @@
 import React, { useRef, useState } from 'react'
 import styled from 'styled-components'
+import { CheckIcon } from '../assets/CheckIcon'
+import { ErrorIcon } from '../assets/ErrorIcon'
 import { PlusIcon } from '../assets/PlusIcon'
 import { devices } from '../styles/global-styles'
 import { TileData } from '../utils/types'
@@ -141,6 +143,19 @@ const AddTileForm: React.FC<AddTileFormProps> = ({
     }
   }
 
+  const handlePriceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value
+    const regex = /^[0-9]*\.?[0-9]*$/
+
+    if (regex.test(value) || value === '') {
+      setPrice(value)
+    }
+  }
+
+  const isPriceValid = () => {
+    return !isNaN(Number(price)) && Number(price) > 0
+  }
+
   return (
     <FormContainer>
       <FileInputContainer
@@ -191,13 +206,16 @@ const AddTileForm: React.FC<AddTileFormProps> = ({
       </TitleWithInput>
       <TitleWithInput>
         <p>Price</p>
-        <Input
-          type="text"
-          value={price}
-          onChange={e => setPrice(e.target.value)}
-          placeholder="Enter price"
-          required
-        />
+        <InputContainer>
+          <Input
+            type="text"
+            value={price}
+            onChange={handlePriceChange}
+            placeholder="Enter price"
+            required
+          />
+          {price && (isPriceValid() ? <CheckValid /> : <ErrorValid />)}
+        </InputContainer>
       </TitleWithInput>
       <SaveButton type="button" onClick={handleSave}>
         Save
@@ -263,10 +281,36 @@ const TitleWithInput = styled.div`
   }
 `
 
+const CheckValid = styled(CheckIcon)`
+  position: absolute;
+  right: 13px;
+  top: 50%;
+  transform: translateY(-50%);
+`
+
+const ErrorValid = styled(ErrorIcon)`
+  position: absolute;
+  right: 13px;
+  top: 50%;
+  transform: translateY(-50%);
+`
+
+const InputContainer = styled.div`
+  display: flex;
+  align-items: center;
+  position: relative;
+`
+
 const Input = styled.input`
   padding: 10px;
+  padding-right: 30px;
   border: 1px solid #ccc;
   border-radius: 4px;
+  flex-grow: 1;
+
+  &:focus + ${CheckValid}, &:focus + ${ErrorValid} {
+    display: block;
+  }
 `
 
 const Textarea = styled.textarea`
