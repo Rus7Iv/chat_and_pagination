@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
+import { postTile } from './api/api'
 import { ChevronLeft } from './assets/ChevronLeft'
 import { PlusIcon } from './assets/PlusIcon'
 import AddTileForm from './components/AddTileForm'
@@ -50,6 +51,7 @@ const App: React.FC = () => {
       setTiles(updatedTiles)
       localStorage.setItem('tiles', JSON.stringify(updatedTiles))
       setShowAddTileForm(false)
+      postTile(newTile)
     } catch (error) {
       if (error instanceof DOMException && error.code === 22) {
         alert(
