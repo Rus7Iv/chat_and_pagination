@@ -68,6 +68,11 @@ const App: React.FC = () => {
     setShowAddTileForm(false)
   }
 
+  const openAddTileForm = () => {
+    setVisibleComponent('addTile')
+    setShowAddTileForm(true)
+  }
+
   return (
     <Container>
       <DesktopView>
@@ -113,7 +118,7 @@ const App: React.FC = () => {
           <Button onClick={() => setVisibleComponent('pagination')}>
             Pagination
           </Button>
-          <Button onClick={() => setShowAddTileForm(true)}>Add tile</Button>
+          <Button onClick={() => openAddTileForm()}>Add tile</Button>
           <Button onClick={() => setVisibleComponent('chat')}>Chat</Button>
         </ButtonsContainer>
       )}
@@ -149,7 +154,7 @@ const App: React.FC = () => {
             </>
           )}
           {visibleComponent === 'chat' && <Chat />}
-          {showAddTileForm && (
+          {visibleComponent === 'addTile' && (
             <AddTileForm
               onSave={handleSaveTile}
               tiles={tiles}
