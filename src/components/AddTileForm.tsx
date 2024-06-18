@@ -232,12 +232,16 @@ const FormContainer = styled.div`
   align-items: center;
   box-sizing: border-box;
   gap: 28px;
-  padding: 0 47.5px;
   max-width: 455px;
   width: 100%;
 
   @media ${devices.laptop} {
     width: 455px;
+    padding: 0 47.5px;
+  }
+
+  @media ${devices.mobile} {
+    padding: 0 31px;
   }
 `
 
