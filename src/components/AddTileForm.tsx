@@ -257,6 +257,7 @@ const FileInputContainer = styled.div`
   overflow: hidden;
   font-size: 16px;
   flex-direction: column;
+  margin-bottom: 12px;
 
   p {
     margin: 0;
