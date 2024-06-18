@@ -19,6 +19,13 @@ const AddTileForm: React.FC<AddTileFormProps> = ({
   const [price, setPrice] = useState('')
   const [image, setImage] = useState('')
 
+  const resetForm = () => {
+    setName('')
+    setDescription('')
+    setPrice('')
+    setImage('')
+  }
+
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
       const file = e.target.files[0]
@@ -76,6 +83,7 @@ const AddTileForm: React.FC<AddTileFormProps> = ({
       } else {
         alert('Произошла неизвестная ошибка при сохранении плитки.')
       }
+      resetForm()
     }
   }
 
