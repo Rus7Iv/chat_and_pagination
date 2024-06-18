@@ -20,6 +20,7 @@ const AddTileForm: React.FC<AddTileFormProps> = ({
   const [price, setPrice] = useState('')
   const [image, setImage] = useState('')
   const [imagePreview, setImagePreview] = useState('')
+  const [isDragOver, setIsDragOver] = useState(false)
 
   const fileInputRef = useRef<HTMLInputElement>(null)
 
@@ -96,11 +97,40 @@ const AddTileForm: React.FC<AddTileFormProps> = ({
 
   const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault()
+    setIsDragOver(true)
+  }
+
+  const handleDragLeave = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault()
+    setIsDragOver(false)
   }
 
   const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault()
-    handleImageChange(e as unknown as React.ChangeEvent<HTMLInputElement>)
+    setIsDragOver(false)
+
+    if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
+      const file = e.dataTransfer.files[0]
+
+      const maxFileSize = 5 * 1024 * 1024
+      if (file.size > maxFileSize) {
+        alert(
+          'Изображение слишком большое. Размер файла не должен превышать 5 МБ.'
+        )
+        return
+      }
+
+      setImage(file.name)
+      const reader = new FileReader()
+      reader.onload = loadEvent => {
+        if (loadEvent.target) {
+          const base64Image = loadEvent.target.result as string
+          setImage(base64Image)
+          setImagePreview(base64Image)
+        }
+      }
+      reader.readAsDataURL(file)
+    }
   }
 
   const handleRemoveImage = () => {
@@ -113,7 +143,12 @@ const AddTileForm: React.FC<AddTileFormProps> = ({
 
   return (
     <FormContainer>
-      <FileInputContainer onDragOver={handleDragOver} onDrop={handleDrop}>
+      <FileInputContainer
+        onDragOver={handleDragOver}
+        onDragLeave={handleDragLeave}
+        onDrop={handleDrop}
+        style={{ borderColor: isDragOver ? '#007bff' : '#adb5bd' }}
+      >
         <FileInput
           ref={fileInputRef}
           type="file"
