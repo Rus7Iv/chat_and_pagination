@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
+import { postTile } from './api/api'
 import { ChevronLeft } from './assets/ChevronLeft'
+import { PlusIcon } from './assets/PlusIcon'
+import AddTileForm from './components/AddTileForm'
 import Chat from './components/Chat'
 import Pagination from './components/Pagination'
 import Tile from './components/Tile'
@@ -13,8 +16,9 @@ const App: React.FC = () => {
   const [currentPage, setCurrentPage] = useState<number>(1)
   const [tilesPerPage] = useState<number>(4)
   const [visibleComponent, setVisibleComponent] = useState<
-    'buttons' | 'pagination' | 'chat'
+    'buttons' | 'pagination' | 'chat' | 'addTile'
   >('buttons')
+  const [showAddTileForm, setShowAddTileForm] = useState(false)
 
   useEffect(() => {
     const storedTiles = JSON.parse(localStorage.getItem('tiles') || '[]')
@@ -35,8 +39,38 @@ const App: React.FC = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' })
   }
 
+  const handleDeleteTile = (id: string) => {
+    const updatedTiles = tiles.filter(tile => tile.id !== id)
+    setTiles(updatedTiles)
+    localStorage.setItem('tiles', JSON.stringify(updatedTiles))
+  }
+
+  const handleSaveTile = (newTile: TileData) => {
+    try {
+      const updatedTiles = [...tiles, newTile]
+      setTiles(updatedTiles)
+      localStorage.setItem('tiles', JSON.stringify(updatedTiles))
+      setShowAddTileForm(false)
+      postTile(newTile)
+    } catch (error) {
+      if (error instanceof DOMException && error.code === 22) {
+        alert(
+          'Ошибка: Недостаточно места в localStorage. Пожалуйста, освободите место и попробуйте снова.'
+        )
+      } else {
+        alert('Произошла неизвестная ошибка при сохранении плитки.')
+      }
+    }
+  }
+
   const handleBack = () => {
     setVisibleComponent('buttons')
+    setShowAddTileForm(false)
+  }
+
+  const openAddTileForm = () => {
+    setVisibleComponent('addTile')
+    setShowAddTileForm(true)
   }
 
   return (
@@ -45,17 +79,38 @@ const App: React.FC = () => {
         <TilesList>
           <Tiles>
             {currentTiles.map(tile => (
-              <Tile key={tile.id} tile={tile} />
+              <Tile
+                key={tile.id}
+                tile={tile}
+                onDelete={() => handleDeleteTile(tile.id)}
+              />
             ))}
           </Tiles>
-          <Pagination
-            totalTiles={tiles.length}
-            tilesPerPage={tilesPerPage}
-            currentPage={currentPage}
-            paginate={paginate}
-          />
+          <AddedBtnAndPagination>
+            <PaginationContainer>
+              <Pagination
+                totalTiles={tiles.length}
+                tilesPerPage={tilesPerPage}
+                currentPage={currentPage}
+                paginate={paginate}
+              />
+            </PaginationContainer>
+            <AddedTileButton
+              onClick={() => setShowAddTileForm(!showAddTileForm)}
+            >
+              {showAddTileForm ? <ChevronLeft /> : <PlusIcon />}
+            </AddedTileButton>
+          </AddedBtnAndPagination>
         </TilesList>
-        <Chat />
+        {showAddTileForm ? (
+          <AddTileForm
+            onSave={handleSaveTile}
+            tiles={tiles}
+            setTiles={setTiles}
+          />
+        ) : (
+          <Chat />
+        )}
       </DesktopView>
 
       {visibleComponent === 'buttons' && (
@@ -63,11 +118,14 @@ const App: React.FC = () => {
           <Button onClick={() => setVisibleComponent('pagination')}>
             Pagination
           </Button>
+          <Button onClick={() => openAddTileForm()}>Add tile</Button>
           <Button onClick={() => setVisibleComponent('chat')}>Chat</Button>
         </ButtonsContainer>
       )}
 
-      {(visibleComponent === 'pagination' || visibleComponent === 'chat') && (
+      {(visibleComponent === 'pagination' ||
+        visibleComponent === 'chat' ||
+        showAddTileForm) && (
         <ComponentContainer>
           <MobileHeader>
             <BackButton onClick={handleBack}>
@@ -79,7 +137,11 @@ const App: React.FC = () => {
               <TilesList>
                 <Tiles>
                   {currentTiles.map(tile => (
-                    <Tile key={tile.id} tile={tile} />
+                    <Tile
+                      key={tile.id}
+                      tile={tile}
+                      onDelete={() => handleDeleteTile(tile.id)}
+                    />
                   ))}
                 </Tiles>
               </TilesList>
@@ -92,6 +154,13 @@ const App: React.FC = () => {
             </>
           )}
           {visibleComponent === 'chat' && <Chat />}
+          {visibleComponent === 'addTile' && (
+            <AddTileForm
+              onSave={handleSaveTile}
+              tiles={tiles}
+              setTiles={setTiles}
+            />
+          )}
         </ComponentContainer>
       )}
     </Container>
@@ -146,6 +215,27 @@ const Button = styled.button`
   border-radius: 4px;
 `
 
+const AddedTileButton = styled(Button)`
+  width: 60px;
+  height: 40px;
+  display: flex;
+  margin-left: auto;
+  justify-content: center;
+`
+
+const AddedBtnAndPagination = styled.div`
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  justify-content: space-between;
+`
+
+const PaginationContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  flex-grow: 1;
+`
+
 const ComponentContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -188,6 +278,7 @@ const MobileHeader = styled.div`
   display: flex;
   position: fixed;
   top: 0;
+  z-index: 999;
   background: linear-gradient(
     to bottom,
     rgba(255, 255, 255, 1),

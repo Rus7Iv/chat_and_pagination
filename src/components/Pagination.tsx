@@ -163,6 +163,8 @@ const PageLink = styled.a<{ disabled?: boolean }>`
 
 const PageItem = styled.li`
   margin: 0;
+  height: 40px;
+  box-sizing: border-box;
 
   &:first-child ${PageLink} {
     border-top-left-radius: 4px;
