@@ -121,6 +121,7 @@ const ChatContainer = styled.div`
   flex-direction: column;
   padding: 10px;
   gap: 10px;
+  box-sizing: border-box;
 
   @media ${devices.laptop} {
     width: 455px;
