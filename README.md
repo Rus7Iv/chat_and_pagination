@@ -1,30 +1,50 @@
-# React + TypeScript + Vite
+# Chat and Pagination
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Этот репозиторий содержит веб-приложение, которое объединяет интерфейс чата с функцией пагинации. Проект построен с использованием React, TypeScript и Vite, что обеспечивает современную среду разработки и эффективный процесс сборки.
 
-Currently, two official plugins are available:
+## Функциональность
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- **Чат в реальном времени:** Интерактивный интерфейс чата с мгновенными обновлениями.
+- **Пагинация:** Эффективная пагинация сообщений чата.
+- **TypeScript:** Статическая типизация для большей надежности и удобства разработки.
+- **Vite:** Быстрый инструмент сборки с поддержкой горячей замены модулей (HMR).
 
-## Expanding the ESLint configuration
+## Технологический стек
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+- **React**
+- **TypeScript**
+- **Vite**
 
-- Configure the top-level `parserOptions` property like this:
+## Установка
 
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-  },
-}
-```
+Чтобы начать работу с проектом, выполните следующие шаги:
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+1. Клонируйте репозиторий:
+    ```bash
+    git clone https://github.com/Rus7Iv/chat_and_pagination.git
+    cd chat_and_pagination
+    ```
+
+2. Установите зависимости с помощью `pnpm`:
+    ```bash
+    pnpm install
+    ```
+
+3. Запустите сервер разработки:
+    ```bash
+    pnpm dev
+    ```
+
+4. Откройте браузер и перейдите на `http://localhost:3000`.
+
+## Структура проекта
+
+- `public/`: Статические ресурсы.
+- `src/`: Исходный код.
+  - `components/`: React-компоненты.
+  - `pages/`: Компоненты страниц.
+  - `utils/`: Вспомогательные функции.
+  - `index.tsx`: Точка входа в приложение.
+- `package.json`: Метаданные проекта и зависимости.
+- `tsconfig.json`: Конфигурация TypeScript.
+- `vite.config.ts`: Конфигурация Vite.
