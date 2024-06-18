@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
+import { PlusIcon } from '../assets/PlusIcon'
 import { devices } from '../styles/global-styles'
 import { TileData } from '../utils/types'
 
@@ -87,9 +88,22 @@ const AddTileForm: React.FC<AddTileFormProps> = ({
     }
   }
 
+  const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault()
+  }
+
+  const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault()
+    handleImageChange(e as unknown as React.ChangeEvent<HTMLInputElement>)
+  }
+
   return (
     <FormContainer>
-      <Input type="file" onChange={handleImageChange} accept="image/*" />
+      <FileInputContainer onDragOver={handleDragOver} onDrop={handleDrop}>
+        <FileInput type="file" onChange={handleImageChange} accept="image/*" />
+        <PlusIcon />
+        <p>Upload</p>
+      </FileInputContainer>
       <TitleWithInput>
         <p>Name</p>
         <Input
@@ -131,15 +145,43 @@ export default AddTileForm
 const FormContainer = styled.div`
   display: flex;
   flex-direction: column;
+  align-items: center;
   box-sizing: border-box;
   gap: 28px;
-  padding: 20px;
+  padding: 0 47.5px;
   max-width: 455px;
   width: 100%;
 
   @media ${devices.laptop} {
     width: 455px;
   }
+`
+
+const FileInputContainer = styled.div`
+  width: 334px;
+  height: 334px;
+  border: 1px dashed #adb5bd;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+  font-size: 16px;
+  flex-direction: column;
+
+  p {
+    margin: 0;
+    color: #6c757d;
+  }
+`
+
+const FileInput = styled.input`
+  opacity: 0;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  cursor: pointer;
 `
 
 const TitleWithInput = styled.div`
@@ -166,10 +208,12 @@ const Textarea = styled.textarea`
   border: 1px solid #ccc;
   border-radius: 4px;
   resize: none;
+  font-family: Inter, sans-serif;
 `
 
 const SaveButton = styled.button`
-  padding: 10px 20px;
+  padding: 10px;
+  width: 100%;
   background-color: #007bff;
   color: white;
   border: none;
