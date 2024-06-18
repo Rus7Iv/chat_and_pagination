@@ -19,12 +19,14 @@ const AddTileForm: React.FC<AddTileFormProps> = ({
   const [description, setDescription] = useState('')
   const [price, setPrice] = useState('')
   const [image, setImage] = useState('')
+  const [imagePreview, setImagePreview] = useState('')
 
   const resetForm = () => {
     setName('')
     setDescription('')
     setPrice('')
     setImage('')
+    setImagePreview('')
   }
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -39,11 +41,13 @@ const AddTileForm: React.FC<AddTileFormProps> = ({
         return
       }
 
+      setImage(file.name)
       const reader = new FileReader()
       reader.onload = loadEvent => {
         if (loadEvent.target) {
           const base64Image = loadEvent.target.result as string
           setImage(base64Image)
+          setImagePreview(base64Image)
         }
       }
       reader.readAsDataURL(file)
@@ -101,8 +105,13 @@ const AddTileForm: React.FC<AddTileFormProps> = ({
     <FormContainer>
       <FileInputContainer onDragOver={handleDragOver} onDrop={handleDrop}>
         <FileInput type="file" onChange={handleImageChange} accept="image/*" />
-        <PlusIcon />
-        <p>Upload</p>
+        {!imagePreview && (
+          <>
+            <PlusIcon />
+            <p>Upload</p>
+          </>
+        )}
+        {imagePreview && <ImagePreview src={imagePreview} alt={image} />}
       </FileInputContainer>
       <TitleWithInput>
         <p>Name</p>
@@ -219,4 +228,12 @@ const SaveButton = styled.button`
   border: none;
   border-radius: 4px;
   cursor: pointer;
+`
+
+const ImagePreview = styled.img`
+  max-width: 100%;
+  max-height: 100%;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 `
