@@ -90,28 +90,37 @@ const AddTileForm: React.FC<AddTileFormProps> = ({
   return (
     <FormContainer>
       <Input type="file" onChange={handleImageChange} accept="image/*" />
-      <Input
-        type="text"
-        value={name}
-        onChange={e => setName(e.target.value)}
-        placeholder="Имя"
-        required
-      />
-      <Textarea
-        value={description}
-        onChange={e => setDescription(e.target.value)}
-        placeholder="Описание"
-        required
-      />
-      <Input
-        type="text"
-        value={price}
-        onChange={e => setPrice(e.target.value)}
-        placeholder="Цена"
-        required
-      />
+      <TitleWithInput>
+        <p>Name</p>
+        <Input
+          type="text"
+          value={name}
+          onChange={e => setName(e.target.value)}
+          placeholder="Enter product name"
+          required
+        />
+      </TitleWithInput>
+      <TitleWithInput>
+        <p>Description</p>
+        <Textarea
+          value={description}
+          onChange={e => setDescription(e.target.value)}
+          placeholder="Enter product description"
+          required
+        />
+      </TitleWithInput>
+      <TitleWithInput>
+        <p>Price</p>
+        <Input
+          type="text"
+          value={price}
+          onChange={e => setPrice(e.target.value)}
+          placeholder="Enter price"
+          required
+        />
+      </TitleWithInput>
       <SaveButton type="button" onClick={handleSave}>
-        Сохранить
+        Save
       </SaveButton>
     </FormContainer>
   )
@@ -123,13 +132,26 @@ const FormContainer = styled.div`
   display: flex;
   flex-direction: column;
   box-sizing: border-box;
-  gap: 10px;
+  gap: 28px;
   padding: 20px;
   max-width: 455px;
   width: 100%;
 
   @media ${devices.laptop} {
     width: 455px;
+  }
+`
+
+const TitleWithInput = styled.div`
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+
+  p {
+    line-height: 24.2px;
+    font-weight: 600;
+    font-size: 20px;
+    margin: 0 0 8px;
   }
 `
 
